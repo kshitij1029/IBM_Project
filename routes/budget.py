@@ -8,13 +8,14 @@ import logging
 from flask import Blueprint, render_template, request, jsonify, session
 from services.watsonx_service import estimate_budget as ai_estimate_budget
 from services.budget_service import estimate_budget, breakdown_to_dict
-from utils.helpers import sanitize_text
+from utils.helpers import sanitize_text, login_required
 
 logger = logging.getLogger(__name__)
 budget_bp = Blueprint("budget", __name__)
 
 
 @budget_bp.route("/budget")
+@login_required
 def budget():
     profile = session.get("profile", {})
     return render_template("budget.html", profile=profile)

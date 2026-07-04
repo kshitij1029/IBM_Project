@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from config.settings import Config
-from routes import main_bp, chat_bp, planner_bp, destinations_bp, budget_bp
+from routes import main_bp, chat_bp, planner_bp, destinations_bp, budget_bp, auth_bp
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -41,6 +41,7 @@ def create_app() -> Flask:
     Session(app)
 
     # ── Blueprints ──────────────────────────────────────────────────────────────
+    app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(planner_bp)

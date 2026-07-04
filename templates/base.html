@@ -46,6 +46,7 @@
     </a>
   </nav>
 
+  <!-- Sidebar user section -->
   <div class="sidebar-footer">
     <span class="powered-by">Powered by IBM Granite</span>
   </div>
@@ -56,17 +57,44 @@
 
   <!-- Top Bar -->
   <header class="topbar">
-    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+    <!-- <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
       <i class="bi bi-list"></i>
-    </button>
+    </button> -->
     <div class="topbar-title">{% block page_title %}{% endblock %}</div>
     <div class="topbar-actions">
       <button class="btn-icon" id="themeToggle" title="Toggle dark/light mode">
         <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
       </button>
-      <a href="{{ url_for('chat.chat_page') }}" class="btn btn-primary btn-sm ms-2">
-        <i class="bi bi-chat-dots me-1"></i>Ask AI
+      {% if session.get('user_id') %}
+      <!-- User dropdown -->
+      <div class="topbar-user-dropdown" id="userDropdownWrap">
+        <button class="topbar-user-btn" id="userDropdownBtn" aria-expanded="false">
+          <div class="topbar-user-avatar">{{ session.get('user_initials', '?') }}</div>
+          <span class="topbar-user-name d-none d-md-inline">{{ session.get('user_name', 'Traveler') }}</span>
+          <i class="bi bi-chevron-down topbar-chevron"></i>
+        </button>
+        <div class="topbar-dropdown-menu" id="userDropdownMenu">
+          <div class="topbar-dropdown-header">
+            <div class="topbar-dd-name">{{ session.get('user_name', 'Traveler') }}</div>
+            <div class="topbar-dd-email">{{ session.get('user_email', '') }}</div>
+          </div>
+          <a href="{{ url_for('main.profile') }}" class="topbar-dd-item">
+            <i class="bi bi-person-fill me-2"></i>My Profile
+          </a>
+          <a href="{{ url_for('main.saved_trips') }}" class="topbar-dd-item">
+            <i class="bi bi-bookmark-heart-fill me-2"></i>Saved Trips
+          </a>
+          <div class="topbar-dd-divider"></div>
+          <a href="{{ url_for('auth.logout') }}" class="topbar-dd-item topbar-dd-danger">
+            <i class="bi bi-box-arrow-right me-2"></i>Logout
+          </a>
+        </div>
+      </div>
+      {% else %}
+      <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm ms-2">
+        <i class="bi bi-box-arrow-in-right me-1"></i>Login
       </a>
+      {% endif %}
     </div>
   </header>
 

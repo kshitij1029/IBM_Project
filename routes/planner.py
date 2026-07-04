@@ -16,7 +16,7 @@ from services.watsonx_service import (
     plan_family_trip,
 )
 from services.budget_service import estimate_budget, breakdown_to_dict
-from utils.helpers import sanitize_text, new_id
+from utils.helpers import sanitize_text, new_id, login_required
 from utils.pdf_export import generate_itinerary_pdf
 
 logger = logging.getLogger(__name__)
@@ -24,6 +24,7 @@ planner_bp = Blueprint("planner", __name__)
 
 
 @planner_bp.route("/planner")
+@login_required
 def planner():
     profile = session.get("profile", {})
     return render_template("planner.html", profile=profile)

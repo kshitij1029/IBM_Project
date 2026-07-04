@@ -7,13 +7,14 @@ Destination discovery and AI recommendations.
 import logging
 from flask import Blueprint, render_template, request, jsonify, session
 from services.watsonx_service import recommend_destinations, get_weather_travel_info
-from utils.helpers import sanitize_text
+from utils.helpers import sanitize_text, login_required
 
 logger = logging.getLogger(__name__)
 destinations_bp = Blueprint("destinations", __name__)
 
 
 @destinations_bp.route("/destinations")
+@login_required
 def destinations():
     profile = session.get("profile", {})
     return render_template("destinations.html", profile=profile)

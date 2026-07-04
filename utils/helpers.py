@@ -5,7 +5,9 @@ Shared utility functions.
 """
 
 import uuid
+from functools import wraps
 from datetime import datetime, timedelta
+from flask import session, redirect, url_for, request
 
 
 def new_id() -> str:
@@ -38,3 +40,13 @@ def format_currency(amount: float, symbol: str = "₹") -> str:
 def sanitize_text(text: str, max_length: int = 10000) -> str:
     """Basic sanitization — strip leading/trailing whitespace, cap length."""
     return text.strip()[:max_length]
+
+
+def login_required(f):
+    """Decorator: redirect unauthenticated users to /login."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get("user_id"):
+            return redirect(url_for("auth.login", next=request.path))
+        return f(*args, **kwargs)
+    return decorated

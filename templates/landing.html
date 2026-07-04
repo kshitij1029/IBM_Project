@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voyager – AI Travel Planner</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/landing.css') }}" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+<nav class="lp-nav" id="lpNav">
+  <div class="lp-nav-inner">
+    <a class="lp-brand" href="{{ url_for('main.index') if session.get('user_id') else url_for('auth.landing') }}">
+      <span class="lp-brand-icon">✈</span>
+      <span class="lp-brand-name">Voyager</span>
+    </a>
+
+    <ul class="lp-nav-links" id="lpNavLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#why">About</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="lp-nav-auth">
+      {% if session.get('user_id') %}
+      <a href="{{ url_for('main.index') }}" class="lp-btn-solid">Open Dashboard</a>
+      <a href="{{ url_for('auth.logout') }}" class="lp-btn-ghost">Logout</a>
+      {% else %}
+      <a href="{{ url_for('auth.login') }}" class="lp-btn-ghost">Login</a>
+      <a href="{{ url_for('auth.register') }}" class="lp-btn-solid">Register</a>
+      {% endif %}
+    </div>
+
+    <button class="lp-hamburger" id="lpHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav Drawer -->
+<div class="lp-mobile-nav" id="lpMobileNav">
+  <ul>
+    <li><a href="#home" class="lp-mob-link">Home</a></li>
+    <li><a href="#features" class="lp-mob-link">Features</a></li>
+    <li><a href="#why" class="lp-mob-link">About</a></li>
+    <li><a href="#how" class="lp-mob-link">How It Works</a></li>
+    <li><a href="#testimonials" class="lp-mob-link">Testimonials</a></li>
+    <li><a href="#contact" class="lp-mob-link">Contact</a></li>
+    <li class="lp-mob-divider"></li>
+    {% if session.get('user_id') %}
+    <li><a href="{{ url_for('main.index') }}" class="lp-btn-solid w-100 text-center d-block mb-2">Open Dashboard</a></li>
+    <li><a href="{{ url_for('auth.logout') }}" class="lp-btn-ghost w-100 text-center d-block">Logout</a></li>
+    {% else %}
+    <li><a href="{{ url_for('auth.login') }}" class="lp-btn-ghost w-100 text-center d-block mb-2">Login</a></li>
+    <li><a href="{{ url_for('auth.register') }}" class="lp-btn-solid w-100 text-center d-block">Register</a></li>
+    {% endif %}
+  </ul>
+</div>
+<div class="lp-overlay" id="lpOverlay"></div>
+
+<!-- ══════════════════════════════ HERO ═════════════════════════════════════ -->
+<section class="lp-hero" id="home">
+  <div class="lp-hero-bg"></div>
+  <div class="lp-hero-overlay"></div>
+  <div class="lp-hero-content">
+    <div class="lp-hero-badge">
+      <i class="bi bi-stars me-1"></i> Powered by IBM Granite AI
+    </div>
+    <h1 class="lp-hero-title">
+      Plan Smarter.<br>
+      <span class="lp-accent">Travel Better.</span>
+    </h1>
+    <p class="lp-hero-desc">
+      Voyager AI crafts personalized itineraries, discovers hidden gems, tracks your budget
+      and makes every journey unforgettable — all in seconds.
+    </p>
+    <div class="lp-hero-cta">
+      <a href="{{ url_for('main.index') if session.get('user_id') else url_for('auth.register') }}" class="lp-cta-primary">
+        <i class="bi bi-map me-2"></i>Start Planning
+      </a>
+      <a href="#features" class="lp-cta-secondary">
+        Learn More <i class="bi bi-chevron-down ms-1"></i>
+      </a>
+    </div>
+    <div class="lp-hero-stats">
+      <div class="lp-stat"><span class="lp-stat-num">200+</span><span class="lp-stat-label">Destinations</span></div>
+      <div class="lp-stat-div"></div>
+      <div class="lp-stat"><span class="lp-stat-num">AI</span><span class="lp-stat-label">Powered Plans</span></div>
+      <div class="lp-stat-div"></div>
+      <div class="lp-stat"><span class="lp-stat-num">24/7</span><span class="lp-stat-label">AI Assistant</span></div>
+    </div>
+  </div>
+  <div class="lp-hero-scroll">
+    <a href="#features"><i class="bi bi-chevron-compact-down"></i></a>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FEATURES ═════════════════════════════════════ -->
+<section class="lp-section" id="features">
+  <div class="lp-container">
+    <div class="lp-section-head">
+      <span class="lp-section-badge">Features</span>
+      <h2 class="lp-section-title">Everything You Need to Travel Smarter</h2>
+      <p class="lp-section-sub">Voyager combines AI intelligence with travel expertise to plan your perfect trip.</p>
+    </div>
+    <div class="lp-features-grid">
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#1a56db,#4f46e5)">
+          <i class="bi bi-map-fill"></i>
+        </div>
+        <h3>AI Itinerary Builder</h3>
+        <p>Generate personalized day-by-day itineraries tailored to your travel style, interests, and budget in seconds.</p>
+      </div>
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#059669,#10b981)">
+          <i class="bi bi-wallet2"></i>
+        </div>
+        <h3>Smart Budget Planner</h3>
+        <p>Track expenses, forecast costs by category, and get AI-powered saving tips to stretch every rupee further.</p>
+      </div>
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#7c3aed,#a855f7)">
+          <i class="bi bi-chat-dots-fill"></i>
+        </div>
+        <h3>AI Travel Assistant</h3>
+        <p>Chat with Voyager AI around the clock — ask about visas, weather, local customs, and get instant answers.</p>
+      </div>
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#d97706,#f59e0b)">
+          <i class="bi bi-compass-fill"></i>
+        </div>
+        <h3>Destination Discovery</h3>
+        <p>Explore 200+ curated destinations with insider tips, best-time-to-visit guides, and hidden gem recommendations.</p>
+      </div>
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#dc2626,#ef4444)">
+          <i class="bi bi-cloud-sun-fill"></i>
+        </div>
+        <h3>Weather Intelligence</h3>
+        <p>Get real-time weather data and climate forecasts to pack smartly and plan outdoor activities perfectly.</p>
+      </div>
+      <div class="lp-feature-card">
+        <div class="lp-feature-icon" style="background: linear-gradient(135deg,#0891b2,#06b6d4)">
+          <i class="bi bi-file-pdf-fill"></i>
+        </div>
+        <h3>PDF Export</h3>
+        <p>Download your complete itinerary, budget breakdown, and packing list as a polished, professional PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ WHY CHOOSE US ════════════════════════════════ -->
+<section class="lp-section lp-section-alt" id="why">
+  <div class="lp-container">
+    <div class="lp-section-head">
+      <span class="lp-section-badge">Why Voyager</span>
+      <h2 class="lp-section-title">AI That Understands Travelers</h2>
+      <p class="lp-section-sub">Built on IBM Granite — enterprise-grade AI that adapts to your unique travel preferences.</p>
+    </div>
+    <div class="lp-why-grid">
+      <div class="lp-why-visual">
+        <div class="lp-why-card-preview">
+          <div class="lp-preview-header">
+            <div class="lp-preview-dots"><span></span><span></span><span></span></div>
+            <span class="lp-preview-title">Your AI Itinerary</span>
+          </div>
+          <div class="lp-preview-body">
+            <div class="lp-preview-day">
+              <span class="lp-preview-day-label">Day 1 — Arrival</span>
+              <div class="lp-preview-line"></div>
+              <div class="lp-preview-line short"></div>
+            </div>
+            <div class="lp-preview-day">
+              <span class="lp-preview-day-label">Day 2 — Explore</span>
+              <div class="lp-preview-line"></div>
+              <div class="lp-preview-line short"></div>
+            </div>
+            <div class="lp-preview-day">
+              <span class="lp-preview-day-label">Day 3 — Culture</span>
+              <div class="lp-preview-line"></div>
+              <div class="lp-preview-line short"></div>
+            </div>
+            <div class="lp-preview-budget">
+              <i class="bi bi-wallet2 me-2"></i>Budget Breakdown Ready
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lp-why-points">
+        <div class="lp-why-point">
+          <div class="lp-why-check"><i class="bi bi-check-lg"></i></div>
+          <div>
+            <h4>Hyper-Personalized Plans</h4>
+            <p>Our AI considers your travel style, traveler type, budget, interests, and trip duration to craft plans that feel hand-crafted.</p>
+          </div>
+        </div>
+        <div class="lp-why-point">
+          <div class="lp-why-check"><i class="bi bi-check-lg"></i></div>
+          <div>
+            <h4>Family, Solo & Group Ready</h4>
+            <p>Whether you're travelling solo, as a couple, with family, or in a large group — Voyager adapts the plan accordingly.</p>
+          </div>
+        </div>
+        <div class="lp-why-point">
+          <div class="lp-why-check"><i class="bi bi-check-lg"></i></div>
+          <div>
+            <h4>Budget-to-Luxury Spectrum</h4>
+            <p>From backpacker budgets to luxury splurges, our AI optimizes every recommendation to match your spending level.</p>
+          </div>
+        </div>
+        <div class="lp-why-point">
+          <div class="lp-why-check"><i class="bi bi-check-lg"></i></div>
+          <div>
+            <h4>Instant & Always Available</h4>
+            <p>Generate complete trip plans in under 30 seconds. The AI assistant is available 24/7 for follow-up questions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ HOW IT WORKS ═════════════════════════════════ -->
+<section class="lp-section" id="how">
+  <div class="lp-container">
+    <div class="lp-section-head">
+      <span class="lp-section-badge">How It Works</span>
+      <h2 class="lp-section-title">Plan Your Dream Trip in 3 Steps</h2>
+      <p class="lp-section-sub">From idea to itinerary in under a minute.</p>
+    </div>
+    <div class="lp-steps">
+      <div class="lp-step">
+        <div class="lp-step-num">01</div>
+        <div class="lp-step-icon"><i class="bi bi-person-plus-fill"></i></div>
+        <h3>Create Your Account</h3>
+        <p>Register in seconds. Set up your travel profile with preferences, interests, and home country for personalized results.</p>
+      </div>
+      <div class="lp-step-arrow"><i class="bi bi-arrow-right"></i></div>
+      <div class="lp-step">
+        <div class="lp-step-num">02</div>
+        <div class="lp-step-icon"><i class="bi bi-sliders"></i></div>
+        <h3>Configure Your Trip</h3>
+        <p>Enter your destination, dates, budget, travel style, and interests. Our AI absorbs every detail to craft the perfect plan.</p>
+      </div>
+      <div class="lp-step-arrow"><i class="bi bi-arrow-right"></i></div>
+      <div class="lp-step">
+        <div class="lp-step-num">03</div>
+        <div class="lp-step-icon"><i class="bi bi-download"></i></div>
+        <h3>Get Your Itinerary</h3>
+        <p>Receive a complete day-by-day itinerary with budget breakdown. Save it, tweak it, or export it as a professional PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TESTIMONIALS ═══════════════════════════════════ -->
+<section class="lp-section lp-section-alt" id="testimonials">
+  <div class="lp-container">
+    <div class="lp-section-head">
+      <span class="lp-section-badge">Testimonials</span>
+      <h2 class="lp-section-title">Travelers Love Voyager</h2>
+      <p class="lp-section-sub">Real stories from real adventurers around the world.</p>
+    </div>
+    <div class="lp-testimonials">
+      <div class="lp-testi-card">
+        <div class="lp-testi-stars">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+        </div>
+        <p>"Voyager planned our entire 10-day Rajasthan trip in under a minute. The budget breakdown was spot-on and we didn't miss a single must-see spot!"</p>
+        <div class="lp-testi-author">
+          <div class="lp-testi-avatar">PR</div>
+          <div>
+            <strong>Priya Reddy</strong>
+            <span>Family Trip · Rajasthan</span>
+          </div>
+        </div>
+      </div>
+      <div class="lp-testi-card">
+        <div class="lp-testi-stars">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+        </div>
+        <p>"As a solo backpacker, I was amazed at how well the AI understood my budget constraints. It even suggested hidden gems I'd never have found myself."</p>
+        <div class="lp-testi-author">
+          <div class="lp-testi-avatar" style="background:linear-gradient(135deg,#059669,#10b981)">AM</div>
+          <div>
+            <strong>Arjun Mehta</strong>
+            <span>Solo Trip · Southeast Asia</span>
+          </div>
+        </div>
+      </div>
+      <div class="lp-testi-card">
+        <div class="lp-testi-stars">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-half-fill"></i>
+        </div>
+        <p>"The AI chat assistant answered all my visa and currency questions instantly. The packing list feature alone saved me hours of research!"</p>
+        <div class="lp-testi-author">
+          <div class="lp-testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">SK</div>
+          <div>
+            <strong>Sarah Khan</strong>
+            <span>Couple Trip · Europe</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ CONTACT / CTA ═══════════════════════════════ -->
+<section class="lp-section lp-cta-section" id="contact">
+  <div class="lp-container">
+    <div class="lp-cta-box">
+      <h2>Ready to Plan Your Next Adventure?</h2>
+      <p>Join thousands of travelers who use Voyager AI to plan smarter, travel better.</p>
+      <div class="lp-cta-actions">
+        <a href="{{ url_for('main.index') if session.get('user_id') else url_for('auth.register') }}" class="lp-cta-primary">
+          <i class="bi bi-rocket-takeoff me-2"></i>Get Started Free
+        </a>
+        <a href="{{ url_for('main.index') if session.get('user_id') else url_for('auth.login') }}" class="lp-cta-secondary-white">
+          {% if session.get('user_id') %}Open your dashboard{% else %}Already have an account? Login{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ FOOTER ═════════════════════════════════════ -->
+<footer class="lp-footer">
+  <div class="lp-container">
+    <div class="lp-footer-grid">
+      <div class="lp-footer-brand">
+        <div class="lp-brand">
+          <span class="lp-brand-icon">✈</span>
+          <span class="lp-brand-name">Voyager</span>
+        </div>
+        <p>AI-powered travel planning for the modern explorer. Built on IBM Granite AI technology.</p>
+        <div class="lp-social">
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="lp-footer-links">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="{{ url_for('auth.register') }}">Get Started</a></li>
+        </ul>
+      </div>
+      <div class="lp-footer-links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="lp-footer-links">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-footer-bottom">
+      <span>&copy; {{ now.year if now else '2025' }} Voyager AI Travel Planner. All rights reserved.</span>
+      <span>Powered by IBM Granite AI</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── Navbar scroll effect ──────────────────────────────────────────────────────
+const nav = document.getElementById('lpNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Hamburger menu ────────────────────────────────────────────────────────────
+const hamburger = document.getElementById('lpHamburger');
+const mobileNav = document.getElementById('lpMobileNav');
+const overlay   = document.getElementById('lpOverlay');
+
+function openMobileNav() {
+  mobileNav.classList.add('open');
+  overlay.classList.add('active');
+  hamburger.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  mobileNav.classList.remove('open');
+  overlay.classList.remove('active');
+  hamburger.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () => {
+  mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+});
+overlay.addEventListener('click', closeMobileNav);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+
+// Close on internal link click
+document.querySelectorAll('.lp-mob-link').forEach(link => {
+  link.addEventListener('click', closeMobileNav);
+});
+
+// ── Smooth scroll for anchor links ────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// ── Scroll-triggered entrance animations ─────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.lp-feature-card, .lp-step, .lp-testi-card, .lp-why-point').forEach(el => {
+  el.classList.add('anim-fade');
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

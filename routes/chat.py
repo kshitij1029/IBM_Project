@@ -5,10 +5,10 @@ AI Chat endpoint — maintains per-session conversation history.
 """
 
 import logging
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
 
 from services.watsonx_service import chat
-from utils.helpers import sanitize_text
+from utils.helpers import sanitize_text, login_required
 
 logger = logging.getLogger(__name__)
 chat_bp = Blueprint("chat", __name__)
@@ -29,6 +29,7 @@ def _push_message(role: str, content: str):
 
 
 @chat_bp.route("/chat")
+@login_required
 def chat_page():
     profile = session.get("profile", {})
     history = _get_history()

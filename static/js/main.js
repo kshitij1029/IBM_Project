@@ -31,14 +31,27 @@ overlay.className = 'sidebar-overlay';
 document.body.appendChild(overlay);
 
 function closeSidebar() {
-  sidebar.classList.remove('open');
+  sidebar?.classList.remove('open');
   overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function openSidebar() {
+  if (window.innerWidth <= 992) {
+    sidebar?.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
 sidebarToggle?.addEventListener('click', () => {
   if (window.innerWidth <= 992) {
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('active');
+    const isOpen = sidebar?.classList.contains('open');
+    if (isOpen) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
   } else {
     // On desktop: collapse/expand
     const collapsed = sidebar.style.width === '60px';
@@ -48,6 +61,14 @@ sidebarToggle?.addEventListener('click', () => {
 });
 
 overlay.addEventListener('click', closeSidebar);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeSidebar();
+});
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 992) {
+    closeSidebar();
+  }
+});
 
 // ── Toast Notifications ────────────────────────────────────────────────────
 function showToast(message, type = 'info', duration = 3500) {
@@ -123,3 +144,42 @@ function formatAIText(text) {
 // Expose globally
 window.formatAIText = formatAIText;
 window.showToast = showToast;
+
+// ── User Dropdown Menu ─────────────────────────────────────────────────────
+const userDropdownBtn = document.getElementById('userDropdownBtn');
+const userDropdownMenu = document.getElementById('userDropdownMenu');
+const userDropdownWrap = document.getElementById('userDropdownWrap');
+
+if (userDropdownBtn && userDropdownMenu) {
+  // Toggle on button click
+  userDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = userDropdownMenu.classList.contains('show');
+    userDropdownMenu.classList.toggle('show');
+    userDropdownBtn.setAttribute('aria-expanded', !isOpen);
+  });
+
+  // Close on menu item click
+  document.querySelectorAll('.topbar-dd-item').forEach(item => {
+    item.addEventListener('click', () => {
+      userDropdownMenu.classList.remove('show');
+      userDropdownBtn.setAttribute('aria-expanded', false);
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!userDropdownWrap?.contains(e.target)) {
+      userDropdownMenu.classList.remove('show');
+      userDropdownBtn.setAttribute('aria-expanded', false);
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      userDropdownMenu.classList.remove('show');
+      userDropdownBtn.setAttribute('aria-expanded', false);
+    }
+  });
+}

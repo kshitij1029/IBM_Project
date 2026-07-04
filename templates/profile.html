@@ -5,19 +5,75 @@
 {% block content %}
 <div class="row g-4 justify-content-center">
   <div class="col-12 col-lg-7">
-    <div class="glass-card p-4">
-      <div class="profile-header mb-4">
-        <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
-        <div>
-          <h4 class="mb-0">{{ profile.name }}</h4>
-          <small class="text-muted">{{ profile.traveler_type | title }} Traveler · {{ profile.travel_style | title }}</small>
+    <div class="glass-card p-4 mb-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="profile-avatar" style="width: 64px; height: 64px; font-size: 1.6rem;">
+            {% if profile.avatar %}
+            <img src="{{ profile.avatar }}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"/>
+            {% else %}
+            <i class="bi bi-person-fill"></i>
+            {% endif %}
+          </div>
+          <div>
+            <h4 class="mb-0">{{ profile.name }}</h4>
+            <small class="text-muted">{{ profile.traveler_type | title }} Traveler · {{ profile.travel_style | title }}</small>
+          </div>
+        </div>
+        <div class="text-md-end">
+          <div class="small text-muted">Account created</div>
+          <div class="fw-semibold">{{ profile.created_at or '—' }}</div>
         </div>
       </div>
 
+      <div class="row g-3 mt-3">
+        <div class="col-6 col-md-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">User ID</div>
+            <div class="fw-semibold">{{ profile.user_id or '—' }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">Last Login</div>
+            <div class="fw-semibold">{{ profile.last_login or '—' }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">Interests</div>
+            <div class="fw-semibold">{{ profile.interests | length }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">Travel Style</div>
+            <div class="fw-semibold">{{ profile.travel_style | title }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card p-4">
       <form method="POST" action="{{ url_for('main.profile') }}">
         <div class="mb-3">
           <label class="form-label">Your Name</label>
           <input type="text" class="form-control" name="name" value="{{ profile.name }}" placeholder="Enter your name"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" name="email" value="{{ profile.email }}" placeholder="you@example.com" disabled/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Avatar URL</label>
+          <input type="url" class="form-control" name="avatar" value="{{ profile.avatar }}" placeholder="https://example.com/avatar.jpg"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Short Bio</label>
+          <textarea class="form-control" name="bio" rows="3" placeholder="Tell us a little about your travel style">{{ profile.bio }}</textarea>
         </div>
 
         <div class="row g-2 mb-3">
