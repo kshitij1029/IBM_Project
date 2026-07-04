@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}AI Chat – Voyager{% endblock %}
+{% block page_title %}<i class="bi bi-chat-dots-fill me-2 text-primary"></i>AI Chat Assistant{% endblock %}
+
+{% block content %}
+<div class="chat-layout">
+
+  <!-- ── SIDEBAR PANEL ──────────────────────────────────────────── -->
+  <div class="chat-sidebar glass-card">
+    <div class="chat-sidebar-header">
+      <div class="agent-avatar"><i class="bi bi-robot"></i></div>
+      <div>
+        <div class="agent-name">Voyager AI</div>
+        <div class="agent-status"><span class="status-dot"></span>Online</div>
+      </div>
+    </div>
+    <hr class="divider"/>
+    <p class="chat-sidebar-desc">
+      Ask me anything about travel — itineraries, destinations, visa requirements,
+      packing tips, budget estimates, or local recommendations.
+    </p>
+
+    <div class="chat-suggestions">
+      <p class="suggestions-title">Try asking:</p>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Plan a 7-day trip to Rajasthan under ₹40,000</button>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Best beaches to visit in India in December</button>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Visa requirements for Thailand from India</button>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Family-friendly activities in Singapore</button>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Budget backpacking Europe route for 2 weeks</button>
+      <button class="suggestion-chip" onclick="injectSuggestion(this)">Packing list for a Himalayan trek in October</button>
+    </div>
+
+    <hr class="divider"/>
+    <button class="btn btn-outline-danger btn-sm w-100" id="clearChatBtn">
+      <i class="bi bi-trash me-1"></i>Clear Conversation
+    </button>
+  </div>
+
+  <!-- ── CHAT WINDOW ───────────────────────────────────────────── -->
+  <div class="chat-window">
+    <div class="chat-messages" id="chatMessages">
+      <!-- Welcome message -->
+      <div class="chat-msg assistant-msg">
+        <div class="msg-avatar assistant-avatar"><i class="bi bi-robot"></i></div>
+        <div class="msg-bubble">
+          <div class="msg-text">
+            👋 Hello! I'm <strong>Voyager</strong>, your AI-powered travel planner.
+            I'm here to help you plan the perfect trip — from crafting day-by-day itineraries
+            and discovering hidden gems to optimizing your budget and handling visa queries.<br><br>
+            Where would you like to travel today? ✈️
+          </div>
+          <div class="msg-time">Just now</div>
+        </div>
+      </div>
+
+      <!-- Existing history from server -->
+      {% for turn in history %}
+        {% if turn.role == 'user' %}
+        <div class="chat-msg user-msg">
+          <div class="msg-bubble">
+            <div class="msg-text">{{ turn.content }}</div>
+          </div>
+          <div class="msg-avatar user-avatar"><i class="bi bi-person-fill"></i></div>
+        </div>
+        {% else %}
+        <div class="chat-msg assistant-msg">
+          <div class="msg-avatar assistant-avatar"><i class="bi bi-robot"></i></div>
+          <div class="msg-bubble">
+            <div class="msg-text">{{ turn.content | safe }}</div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="typing-indicator" id="typingIndicator" style="display:none;">
+      <div class="msg-avatar assistant-avatar"><i class="bi bi-robot"></i></div>
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Input bar -->
+    <div class="chat-input-bar">
+      <textarea
+        class="chat-input"
+        id="chatInput"
+        placeholder="Ask about destinations, itineraries, visa, budget…"
+        rows="1"
+        maxlength="2000"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" title="Send message">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </div>
+    <div class="chat-input-hint">
+      <small class="text-muted">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line · Powered by IBM Granite</small>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

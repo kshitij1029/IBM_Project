@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Voyager – AI Travel Planner{% endblock %}</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ SIDEBAR ══════════════════════ -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">✈</span>
+    <span class="brand-name">Voyager</span>
+    <span class="brand-sub">AI Travel Planner</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('main.index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">
+      <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if request.endpoint == 'chat.chat_page' %}active{% endif %}">
+      <i class="bi bi-chat-dots-fill"></i><span>AI Chat</span>
+    </a>
+    <a href="{{ url_for('planner.planner') }}" class="nav-link {% if request.endpoint == 'planner.planner' %}active{% endif %}">
+      <i class="bi bi-map-fill"></i><span>Trip Planner</span>
+    </a>
+    <a href="{{ url_for('destinations.destinations') }}" class="nav-link {% if request.endpoint == 'destinations.destinations' %}active{% endif %}">
+      <i class="bi bi-compass-fill"></i><span>Destinations</span>
+    </a>
+    <a href="{{ url_for('budget.budget') }}" class="nav-link {% if request.endpoint == 'budget.budget' %}active{% endif %}">
+      <i class="bi bi-wallet2"></i><span>Budget Planner</span>
+    </a>
+    <a href="{{ url_for('main.saved_trips') }}" class="nav-link {% if request.endpoint == 'main.saved_trips' %}active{% endif %}">
+      <i class="bi bi-bookmark-heart-fill"></i><span>Saved Trips</span>
+    </a>
+    <a href="{{ url_for('main.profile') }}" class="nav-link {% if request.endpoint == 'main.profile' %}active{% endif %}">
+      <i class="bi bi-person-fill"></i><span>My Profile</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <span class="powered-by">Powered by IBM Granite</span>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════ MAIN CONTENT ═══════════════════════ -->
+<div class="main-content" id="mainContent">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="topbar-title">{% block page_title %}{% endblock %}</div>
+    <div class="topbar-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle dark/light mode">
+        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+      </button>
+      <a href="{{ url_for('chat.chat_page') }}" class="btn btn-primary btn-sm ms-2">
+        <i class="bi bi-chat-dots me-1"></i>Ask AI
+      </a>
+    </div>
+  </header>
+
+  <!-- Page Body -->
+  <main class="page-body">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<!-- ═══════════════════════ TOAST CONTAINER ══════════════════════════════════ -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<!-- Core JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

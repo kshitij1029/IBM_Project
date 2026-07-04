@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Destinations – Voyager{% endblock %}
+{% block page_title %}<i class="bi bi-compass-fill me-2 text-primary"></i>Destination Explorer{% endblock %}
+
+{% block content %}
+
+<!-- ── SEARCH & FILTERS ────────────────────────────────────────────── -->
+<div class="glass-card p-4 mb-4">
+  <div class="row g-3 align-items-end">
+    <div class="col-12 col-md-4">
+      <label class="form-label">Travel Style</label>
+      <select class="form-select" id="recStyle">
+        <option value="budget">Budget</option>
+        <option value="mid-range" selected>Mid-Range</option>
+        <option value="luxury">Luxury</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-2">
+      <label class="form-label">Duration (days)</label>
+      <input type="number" class="form-control" id="recDuration" value="7" min="1" max="90"/>
+    </div>
+    <div class="col-6 col-md-3">
+      <label class="form-label">Budget (₹)</label>
+      <input type="number" class="form-control" id="recBudget" value="60000" step="5000"/>
+    </div>
+    <div class="col-12 col-md-3">
+      <button class="btn btn-primary w-100" id="getRecommendationsBtn">
+        <i class="bi bi-magic me-2"></i>Get AI Recommendations
+      </button>
+    </div>
+  </div>
+
+  <!-- Interest Tags -->
+  <div class="mt-3">
+    <label class="form-label">Select Interests:</label>
+    <div class="interest-tags" id="recInterestTags">
+      {% for tag in ["Adventure","Beach","Culture","Wildlife","Mountains","Food","Luxury","Backpacking","Religious","Historical","Family","Nightlife"] %}
+      <span class="interest-tag {% if tag in ['Adventure','Beach'] %}selected{% endif %}" data-tag="{{ tag }}">{{ tag }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- ── LOADING ─────────────────────────────────────────────────────── -->
+<div id="recLoading" style="display:none;" class="text-center py-5">
+  <div class="spinner-border text-primary me-2"></div>
+  <span class="text-muted">Voyager AI is finding the best destinations for you…</span>
+</div>
+
+<!-- ── AI RECOMMENDATIONS RESULT ──────────────────────────────────── -->
+<div id="recommendationsResult" style="display:none;">
+  <div class="glass-card p-4 mb-4">
+    <h5 class="mb-3"><i class="bi bi-stars me-2 text-warning"></i>AI Recommended Destinations</h5>
+    <div id="recommendationsText" class="recommendations-content"></div>
+  </div>
+</div>
+
+<!-- ── CURATED DESTINATION CARDS ──────────────────────────────────── -->
+<h5 class="section-title mb-3">Curated Destinations</h5>
+<div class="row g-3">
+  {% set destinations = [
+    {"name":"Goa","country":"India","tag":"Beach","img_color":"#06b6d4","highlights":"Beaches, Nightlife, Portuguese Heritage","best_time":"Oct–Mar","budget":"₹3,000–₹8,000/day","visa":"Not required"},
+    {"name":"Manali","country":"India","tag":"Adventure","img_color":"#3b82f6","highlights":"Trekking, Snow, Rohtang Pass","best_time":"Mar–Jun","budget":"₹2,000–₹6,000/day","visa":"Not required"},
+    {"name":"Jaipur","country":"India","tag":"Cultural","img_color":"#f59e0b","highlights":"Amber Fort, Hawa Mahal, Cuisine","best_time":"Oct–Mar","budget":"₹2,500–₹7,000/day","visa":"Not required"},
+    {"name":"Bali","country":"Indonesia","tag":"Beach","img_color":"#10b981","highlights":"Temples, Rice Terraces, Surfing","best_time":"Apr–Oct","budget":"₹3,500–₹10,000/day","visa":"₹1,600 on arrival"},
+    {"name":"Thailand","country":"Thailand","tag":"Adventure","img_color":"#8b5cf6","highlights":"Temples, Islands, Street Food","best_time":"Nov–Apr","budget":"₹3,000–₹9,000/day","visa":"Free (30 days)"},
+    {"name":"Paris","country":"France","tag":"Romantic","img_color":"#ef4444","highlights":"Eiffel Tower, Art, Cuisine","best_time":"Apr–Jun","budget":"₹8,000–₹25,000/day","visa":"Schengen required"},
+    {"name":"Dubai","country":"UAE","tag":"Luxury","img_color":"#f97316","highlights":"Burj Khalifa, Desert Safari, Shopping","best_time":"Nov–Mar","budget":"₹7,000–₹30,000/day","visa":"₹3,000 approx"},
+    {"name":"Maldives","country":"Maldives","tag":"Luxury","img_color":"#0891b2","highlights":"Overwater Villas, Snorkeling, Sunsets","best_time":"Nov–Apr","budget":"₹12,000–₹50,000/day","visa":"Free on arrival"},
+    {"name":"Japan","country":"Japan","tag":"Cultural","img_color":"#db2777","highlights":"Cherry Blossoms, Temples, Anime","best_time":"Mar–May","budget":"₹7,000–₹20,000/day","visa":"Required"},
+    {"name":"Ladakh","country":"India","tag":"Adventure","img_color":"#6366f1","highlights":"Pangong Lake, Monasteries, High Passes","best_time":"Jun–Sep","budget":"₹3,000–₹8,000/day","visa":"Not required"},
+    {"name":"Singapore","country":"Singapore","tag":"City","img_color":"#dc2626","highlights":"Gardens by Bay, Food, Sentosa","best_time":"Year-round","budget":"₹6,000–₹18,000/day","visa":"Not required"},
+    {"name":"Udaipur","country":"India","tag":"Romantic","img_color":"#7c3aed","highlights":"Lake Palace, Forts, Royal Heritage","best_time":"Sep–Mar","budget":"₹2,500–₹9,000/day","visa":"Not required"},
+  ] %}
+
+  {% for dest in destinations %}
+  <div class="col-12 col-sm-6 col-lg-4">
+    <div class="dest-detail-card glass-card" style="--accent:{{ dest.img_color }}">
+      <div class="dest-detail-banner" style="background:linear-gradient(135deg, {{ dest.img_color }}33, {{ dest.img_color }}11);">
+        <div class="dest-detail-name">{{ dest.name }}</div>
+        <div class="dest-detail-country"><i class="bi bi-geo-alt-fill me-1"></i>{{ dest.country }}</div>
+        <span class="dest-detail-tag">{{ dest.tag }}</span>
+      </div>
+      <div class="dest-detail-body">
+        <div class="dest-detail-row"><i class="bi bi-star-fill me-2 text-warning"></i>{{ dest.highlights }}</div>
+        <div class="dest-detail-row"><i class="bi bi-sun me-2 text-warning"></i>Best time: {{ dest.best_time }}</div>
+        <div class="dest-detail-row"><i class="bi bi-wallet2 me-2 text-success"></i>{{ dest.budget }}</div>
+        <div class="dest-detail-row"><i class="bi bi-passport me-2 text-info"></i>{{ dest.visa }}</div>
+      </div>
+      <div class="dest-detail-actions">
+        <a href="{{ url_for('planner.planner') }}?dest={{ dest.name }}" class="btn btn-primary btn-sm flex-fill">
+          <i class="bi bi-map me-1"></i>Plan Trip
+        </a>
+        <button class="btn btn-outline-secondary btn-sm" onclick="checkWeather('{{ dest.name }}')">
+          <i class="bi bi-cloud-sun me-1"></i>Weather
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ── WEATHER MODAL ───────────────────────────────────────────────── -->
+<div class="modal fade" id="weatherModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="modal-header border-0">
+        <h5 class="modal-title"><i class="bi bi-cloud-sun-fill me-2 text-primary"></i>Weather & Travel Info</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="weatherModalBody" style="color:var(--text)">
+        <div class="text-center py-3">
+          <div class="spinner-border text-primary"></div>
+          <p class="mt-2 text-muted">Loading weather information…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ── Interest tag selection ────────────────────────────────────────
+document.querySelectorAll('#recInterestTags .interest-tag').forEach(tag => {
+  tag.addEventListener('click', () => tag.classList.toggle('selected'));
+});
+
+// ── Get AI recommendations ───────────────────────────────────────
+document.getElementById('getRecommendationsBtn').addEventListener('click', async () => {
+  const selectedInterests = [...document.querySelectorAll('#recInterestTags .interest-tag.selected')]
+    .map(t => t.dataset.tag);
+
+  const payload = {
+    travel_style: document.getElementById('recStyle').value,
+    duration_days: parseInt(document.getElementById('recDuration').value),
+    budget_inr: parseFloat(document.getElementById('recBudget').value),
+    interests: selectedInterests,
+  };
+
+  document.getElementById('recLoading').style.display = 'block';
+  document.getElementById('recommendationsResult').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/destinations/recommend', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    document.getElementById('recommendationsText').innerHTML = formatAIText(data.recommendations || data.error);
+    document.getElementById('recommendationsResult').style.display = 'block';
+  } catch (e) {
+    showToast('Failed to get recommendations. Please try again.', 'danger');
+  } finally {
+    document.getElementById('recLoading').style.display = 'none';
+  }
+});
+
+// ── Weather info modal ───────────────────────────────────────────
+async function checkWeather(dest) {
+  const modal = new bootstrap.Modal(document.getElementById('weatherModal'));
+  const month = new Date().toLocaleString('default', {month: 'long'});
+  document.getElementById('weatherModalBody').innerHTML = `
+    <div class="text-center py-3">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-2 text-muted">Loading weather info for ${dest}…</p>
+    </div>`;
+  modal.show();
+  try {
+    const res = await fetch('/api/destinations/weather', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({destination: dest, month}),
+    });
+    const data = await res.json();
+    document.getElementById('weatherModalBody').innerHTML =
+      `<div class="ai-response">${formatAIText(data.weather_info || data.error)}</div>`;
+  } catch (e) {
+    document.getElementById('weatherModalBody').innerHTML = '<p class="text-danger">Failed to load weather info.</p>';
+  }
+}
+</script>
+{% endblock %}

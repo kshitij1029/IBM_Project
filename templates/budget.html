@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Budget Planner – Voyager{% endblock %}
+{% block page_title %}<i class="bi bi-wallet2 me-2 text-primary"></i>Budget Planner{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+  <!-- ── FORM ──────────────────────────────────────────────────── -->
+  <div class="col-12 col-lg-5">
+    <div class="glass-card p-4">
+      <h5 class="form-section-title"><i class="bi bi-calculator me-2"></i>Trip Budget Estimator</h5>
+
+      <div class="mb-3">
+        <label class="form-label">Destination</label>
+        <input type="text" class="form-control" id="budgetDest" placeholder="e.g. Bali, Paris, Goa…"/>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-6">
+          <label class="form-label">Duration (days)</label>
+          <input type="number" class="form-control" id="budgetDays" value="5" min="1"/>
+        </div>
+        <div class="col-6">
+          <label class="form-label">Travelers</label>
+          <input type="number" class="form-control" id="budgetTravelers" value="2" min="1"/>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Travel Style</label>
+        <div class="style-selector">
+          <label class="style-option">
+            <input type="radio" name="budgetStyle" value="budget" class="style-radio">
+            <span><i class="bi bi-piggy-bank me-1"></i>Budget</span>
+          </label>
+          <label class="style-option checked">
+            <input type="radio" name="budgetStyle" value="mid-range" class="style-radio" checked>
+            <span><i class="bi bi-star me-1"></i>Mid-Range</span>
+          </label>
+          <label class="style-option">
+            <input type="radio" name="budgetStyle" value="luxury" class="style-radio">
+            <span><i class="bi bi-gem me-1"></i>Luxury</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="budgetIntl"/>
+        <label class="form-check-label" for="budgetIntl">International Trip</label>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" id="calcBudgetBtn">
+          <i class="bi bi-calculator me-2"></i>Calculate Budget
+        </button>
+        <button class="btn btn-outline-primary" id="aiBudgetBtn" {% if not budgetDest %}{% endif %}>
+          <i class="bi bi-magic me-2"></i>AI Detailed Estimate
+        </button>
+      </div>
+    </div>
+
+    <!-- Manual Expense Tracker -->
+    <div class="glass-card p-4 mt-3">
+      <h6 class="form-section-title"><i class="bi bi-pencil-square me-2"></i>Manual Expense Tracker</h6>
+      <div id="expenseList" class="expense-list mb-3"></div>
+      <div class="d-flex gap-2">
+        <select class="form-select form-select-sm" id="expenseCategory">
+          <option>Accommodation</option>
+          <option>Transport</option>
+          <option>Food</option>
+          <option>Sightseeing</option>
+          <option>Shopping</option>
+          <option>Miscellaneous</option>
+        </select>
+        <input type="number" class="form-control form-control-sm" id="expenseAmount" placeholder="₹ Amount"/>
+        <button class="btn btn-success btn-sm" id="addExpenseBtn"><i class="bi bi-plus"></i></button>
+      </div>
+      <hr/>
+      <div class="d-flex justify-content-between">
+        <strong>Total Spent:</strong>
+        <strong class="text-success" id="totalSpent">₹0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RESULTS ────────────────────────────────────────────────── -->
+  <div class="col-12 col-lg-7">
+
+    <!-- Quick budget cards (auto-calculated) -->
+    <div class="glass-card p-4 mb-3" id="budgetBreakdownCard" style="display:none;">
+      <h5 class="mb-3"><i class="bi bi-bar-chart-fill me-2 text-success"></i>Budget Breakdown</h5>
+      <div class="row g-2 mb-3" id="budgetStatCards"></div>
+      <div class="total-budget-display" id="totalBudgetDisplay"></div>
+      <canvas id="budgetPieChart" class="mt-3"></canvas>
+    </div>
+
+    <!-- AI estimate text -->
+    <div class="glass-card p-4 mb-3" id="aiBudgetResult" style="display:none;">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0"><i class="bi bi-stars me-2 text-warning"></i>AI Budget Analysis</h5>
+        <span class="badge bg-primary">IBM Granite</span>
+      </div>
+      <div id="aiBudgetText" class="ai-response"></div>
+    </div>
+
+    <!-- Expense vs budget chart -->
+    <div class="glass-card p-4" id="expenseChartCard" style="display:none;">
+      <h5 class="mb-3"><i class="bi bi-pie-chart-fill me-2 text-info"></i>Expense Breakdown</h5>
+      <canvas id="expenseChart"></canvas>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="glass-card p-5 text-center" id="budgetPlaceholder">
+      <div class="placeholder-icon"><i class="bi bi-wallet2"></i></div>
+      <h5 class="mt-3 text-muted">Enter trip details and calculate your budget</h5>
+      <p class="text-muted">Get both instant estimates and AI-powered detailed analysis.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/budget.js') }}"></script>
+{% endblock %}

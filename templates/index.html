@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – Voyager{% endblock %}
+{% block page_title %}<i class="bi bi-grid-1x2-fill me-2 text-primary"></i>Dashboard{% endblock %}
+
+{% block content %}
+<!-- ── HERO BANNER ─────────────────────────────────────────────────── -->
+<div class="hero-banner">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 class="hero-title">Plan Your Perfect Trip<br>with <span class="accent-text">AI Precision</span></h1>
+      <p class="hero-subtitle">
+        Voyager uses IBM Granite AI to craft personalized itineraries, discover hidden gems,
+        track your budget, and make every journey unforgettable.
+      </p>
+      <div class="hero-cta">
+        <a href="{{ url_for('planner.planner') }}" class="btn btn-primary btn-lg me-2">
+          <i class="bi bi-map me-2"></i>Plan a Trip
+        </a>
+        <a href="{{ url_for('chat.chat_page') }}" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-chat-dots me-2"></i>Chat with AI
+        </a>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
+        <!-- Sky -->
+        <rect width="400" height="300" rx="20" fill="#e8f4fd"/>
+        <!-- Sun -->
+        <circle cx="330" cy="60" r="35" fill="#fbbf24" opacity="0.9"/>
+        <!-- Mountains -->
+        <polygon points="0,300 80,140 160,300" fill="#3b82d4" opacity="0.6"/>
+        <polygon points="100,300 210,100 320,300" fill="#1a56db" opacity="0.7"/>
+        <polygon points="240,300 340,150 400,300" fill="#3b82d4" opacity="0.5"/>
+        <!-- Snow caps -->
+        <polygon points="80,140 95,175 65,175" fill="white" opacity="0.9"/>
+        <polygon points="210,100 230,145 190,145" fill="white" opacity="0.9"/>
+        <!-- Airplane -->
+        <g transform="translate(140,70) rotate(-15)">
+          <ellipse cx="30" cy="10" rx="30" ry="8" fill="white"/>
+          <polygon points="30,2 60,10 30,18" fill="#e5e7eb"/>
+          <rect x="10" y="2" width="8" height="16" rx="2" fill="#d1d5db"/>
+          <polygon points="0,6 0,14 -15,10" fill="white"/>
+        </g>
+        <!-- Cloud 1 -->
+        <ellipse cx="80" cy="80" rx="35" ry="20" fill="white" opacity="0.8"/>
+        <ellipse cx="100" cy="72" rx="25" ry="18" fill="white" opacity="0.8"/>
+        <ellipse cx="60" cy="75" rx="20" ry="15" fill="white" opacity="0.8"/>
+        <!-- Cloud 2 -->
+        <ellipse cx="260" cy="40" rx="28" ry="15" fill="white" opacity="0.7"/>
+        <ellipse cx="278" cy="33" rx="20" ry="14" fill="white" opacity="0.7"/>
+        <!-- Suitcase -->
+        <rect x="165" y="220" width="70" height="55" rx="8" fill="#1a56db"/>
+        <rect x="183" y="213" width="34" height="12" rx="4" fill="#3b82d4"/>
+        <rect x="163" y="238" width="74" height="6" rx="3" fill="#3b82d4"/>
+        <circle cx="178" cy="278" r="6" fill="#374151"/>
+        <circle cx="222" cy="278" r="6" fill="#374151"/>
+        <!-- Map pin -->
+        <circle cx="310" cy="200" r="14" fill="#ef4444"/>
+        <polygon points="310,226 296,200 324,200" fill="#ef4444"/>
+        <circle cx="310" cy="200" r="6" fill="white"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ── QUICK STAT CARDS ───────────────────────────────────────────── -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-blue"><i class="bi bi-suitcase-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-value">{{ saved_trips_count }}</div>
+        <div class="stat-label">Saved Trips</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-green"><i class="bi bi-compass-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-value">200+</div>
+        <div class="stat-label">Destinations</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-purple"><i class="bi bi-stars"></i></div>
+      <div class="stat-info">
+        <div class="stat-value">AI</div>
+        <div class="stat-label">Granite Powered</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-orange"><i class="bi bi-globe2"></i></div>
+      <div class="stat-info">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">AI Assistant</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── QUICK ACTIONS ─────────────────────────────────────────────── -->
+<h5 class="section-title mb-3">Quick Actions</h5>
+<div class="row g-3 mb-4">
+  <div class="col-12 col-sm-6 col-lg-3">
+    <a href="{{ url_for('planner.planner') }}" class="quick-card">
+      <i class="bi bi-map-fill"></i>
+      <span>Generate Itinerary</span>
+    </a>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <a href="{{ url_for('destinations.destinations') }}" class="quick-card">
+      <i class="bi bi-compass-fill"></i>
+      <span>Discover Destinations</span>
+    </a>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <a href="{{ url_for('budget.budget') }}" class="quick-card">
+      <i class="bi bi-wallet2"></i>
+      <span>Plan Budget</span>
+    </a>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <a href="{{ url_for('chat.chat_page') }}" class="quick-card">
+      <i class="bi bi-chat-dots-fill"></i>
+      <span>Chat with Voyager</span>
+    </a>
+  </div>
+</div>
+
+<!-- ── RECENT TRIPS ───────────────────────────────────────────────── -->
+<h5 class="section-title mb-3">Recent Trips</h5>
+{% if recent_trips %}
+<div class="row g-3 mb-4">
+  {% for trip in recent_trips %}
+  <div class="col-12 col-md-4">
+    <div class="trip-card glass-card">
+      <div class="trip-card-header">
+        <div class="trip-destination">
+          <i class="bi bi-geo-alt-fill text-primary me-1"></i>
+          <strong>{{ trip.destination }}</strong>
+        </div>
+        {% if trip.is_favorite %}
+        <i class="bi bi-heart-fill text-danger"></i>
+        {% else %}
+        <i class="bi bi-heart text-muted"></i>
+        {% endif %}
+      </div>
+      <div class="trip-meta">
+        <span><i class="bi bi-calendar3 me-1"></i>{{ trip.duration_days }} days</span>
+        <span class="badge-style">{{ trip.travel_style }}</span>
+        <span class="badge-type">{{ trip.traveler_type }}</span>
+      </div>
+      {% if trip.start_date %}
+      <div class="trip-countdown" data-date="{{ trip.start_date }}">
+        <i class="bi bi-clock me-1"></i><span class="countdown-text">Loading…</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state glass-card">
+  <i class="bi bi-suitcase-fill"></i>
+  <p>No trips planned yet. <a href="{{ url_for('planner.planner') }}">Start planning!</a></p>
+</div>
+{% endif %}
+
+<!-- ── FEATURED DESTINATIONS ─────────────────────────────────────── -->
+<h5 class="section-title mb-3">Popular Destinations</h5>
+<div class="row g-3 mb-4">
+  {% set featured = [
+    {"name":"Rajasthan","country":"India","tag":"Cultural","icon":"bi-building-fill","color":"#f59e0b"},
+    {"name":"Bali","country":"Indonesia","tag":"Beach","icon":"bi-sunset-fill","color":"#10b981"},
+    {"name":"Paris","country":"France","tag":"Romantic","icon":"bi-heart-fill","color":"#ef4444"},
+    {"name":"Manali","country":"India","tag":"Adventure","icon":"bi-snow2","color":"#3b82f6"},
+    {"name":"Singapore","country":"Singapore","tag":"City","icon":"bi-buildings-fill","color":"#8b5cf6"},
+    {"name":"Maldives","country":"Maldives","tag":"Luxury","icon":"bi-water","color":"#06b6d4"},
+  ] %}
+  {% for dest in featured %}
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="dest-card" style="--accent:{{ dest.color }}">
+      <div class="dest-icon"><i class="bi {{ dest.icon }}"></i></div>
+      <div class="dest-name">{{ dest.name }}</div>
+      <div class="dest-country">{{ dest.country }}</div>
+      <span class="dest-tag">{{ dest.tag }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ── TRAVEL TIPS TICKER ─────────────────────────────────────────── -->
+<div class="tips-ticker glass-card">
+  <span class="ticker-label"><i class="bi bi-lightbulb-fill me-2"></i>Travel Tip:</span>
+  <div class="ticker-content" id="tipsTicker">
+    Book flights 6–8 weeks in advance for the best domestic deals.
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Countdown timers
+document.querySelectorAll('.trip-countdown').forEach(el => {
+  const date = el.dataset.date;
+  if (!date) return;
+  fetch(`/api/countdown/${date}`)
+    .then(r => r.json())
+    .then(d => {
+      const days = d.days;
+      const txt = el.querySelector('.countdown-text');
+      if (days < 0) txt.textContent = `${Math.abs(days)} days ago`;
+      else if (days === 0) txt.textContent = 'Trip starts today!';
+      else txt.textContent = `${days} days until trip`;
+    });
+});
+
+// Tips ticker rotation
+const tips = [
+  "Book flights 6–8 weeks in advance for the best domestic deals.",
+  "Always carry a copy of your passport and travel insurance documents.",
+  "Learn 5–10 words in the local language — locals love the effort!",
+  "Pack a portable charger and universal travel adapter for any destination.",
+  "Visit popular attractions early morning to beat the crowds.",
+  "Use incognito mode when booking to avoid dynamic pricing.",
+  "Travel in shoulder season for lower prices and fewer crowds.",
+  "Always inform your bank before traveling internationally.",
+];
+let tipIdx = 0;
+const ticker = document.getElementById('tipsTicker');
+setInterval(() => {
+  tipIdx = (tipIdx + 1) % tips.length;
+  ticker.style.opacity = 0;
+  setTimeout(() => { ticker.textContent = tips[tipIdx]; ticker.style.opacity = 1; }, 400);
+}, 5000);
+</script>
+{% endblock %}
