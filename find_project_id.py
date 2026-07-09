@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 IBM_API_KEY = os.getenv("IBM_API_KEY", "")
-WATSONX_URL = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
+WATSONX_URL = os.getenv("WATSONX_URL", "https://au-syd.ml/.cloud.ibm.com")
 
 if not IBM_API_KEY:
     print("ERROR: IBM_API_KEY not set in .env")

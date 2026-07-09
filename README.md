@@ -1,6 +1,6 @@
 # ✈ Voyager — AI-Powered Travel Planner Agent
 
-> An intelligent travel planning web application powered by **IBM Watsonx.ai Granite models**,
+> An intelligent travel planning web application powered by **IBM Watsonx.ai Llama models**,
 > built with **Python Flask** and a modern **Bootstrap 5** frontend.
 
 ---
@@ -119,8 +119,8 @@ Edit `.env`:
 ```env
 IBM_API_KEY=your_ibm_cloud_api_key
 WATSONX_PROJECT_ID=your_project_id
-WATSONX_URL=https://us-south.ml.cloud.ibm.com
-WATSONX_MODEL_ID=ibm/granite-13b-instruct-v2
+WATSONX_URL=https://au-syd.ml.cloud.ibm.com
+WATSONX_MODEL_ID=meta-llama/llama-3-3-70b-instruct
 SECRET_KEY=your-strong-random-key
 OPENWEATHER_API_KEY=optional_for_live_weather
 ```
@@ -219,4 +219,4 @@ Set via Code Engine → Application → Environment variables, mirroring all key
 
 ---
 
-*Made with ❤️ using IBM Watsonx.ai Granite models*
+*Made with ❤️ using IBM Watsonx.ai Llama models*
