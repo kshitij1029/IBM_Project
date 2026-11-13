@@ -1,2 +1,79 @@
+# Environment variables and secrets
 .env
-.env.example
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.secrets
+secrets.json
+credentials.json
+token.json
+token_cache.json
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Flask and application runtime data
+.flask_sessions/
+instance/
+*.log
+logs/
+tmp/
+temp/
+
+# Generated reports, exports, and user uploads
+uploads/
+generated/
+exports/
+reports/
+
+# Local databases and database backups
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.bak
+
+# Test and coverage artifacts
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+test-results/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating-system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
