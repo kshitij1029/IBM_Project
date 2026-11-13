@@ -1,9 +1,10 @@
-"""Repository-root launcher retained for simple local and Gunicorn commands."""
-from backend.app import app
+"""Repository-root launcher retained for local and Gunicorn compatibility."""
+from backend.app import app, Config
 
 if __name__ == "__main__":
+    import os
     app.run(
         host="0.0.0.0",
-        port=__import__("os").getenv("PORT", "5000"),
-        debug=app.config.get("DEBUG", False),
+        port=int(os.getenv("PORT", 5000)),
+        debug=Config.DEBUG,
     )
