@@ -1,5 +1,5 @@
-"""Repository-root launcher retained for local and Gunicorn compatibility."""
-from backend.app import app, Config
+"""Root launcher preserving existing local, test and Gunicorn commands."""
+from backend.app import app, Config, create_app
 
 if __name__ == "__main__":
     import os
