@@ -9,19 +9,20 @@ Usage:
 """
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+load_dotenv(PROJECT_ROOT / ".env")
 
 IBM_API_KEY = os.getenv("IBM_API_KEY", "")
-WATSONX_URL = os.getenv("WATSONX_URL", "https://au-syd.ml/.cloud.ibm.com")
+WATSONX_URL = os.getenv("WATSONX_URL", "https://au-syd.ml.cloud.ibm.com")
 
 if not IBM_API_KEY:
     print("ERROR: IBM_API_KEY not set in .env")
     exit(1)
 
 print(f"Using URL  : {WATSONX_URL}")
-print(f"API Key    : {IBM_API_KEY[:8]}...")
 print()
 
 # ── Step 1: Get IAM token ────────────────────────────────────────────────────
