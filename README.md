@@ -1,222 +1,116 @@
-# ✈ Voyager — AI-Powered Travel Planner Agent
+# Voyager — AI-Powered Travel Planner
 
-> An intelligent travel planning web application powered by **IBM Watsonx.ai Llama models**,
-> built with **Python Flask** and a modern **Bootstrap 5** frontend.
+Voyager is an AI-assisted travel planning web application built with **Python, Flask, Bootstrap 5, and IBM watsonx.ai**.
 
----
+## Features
 
-## 🚀 Features
+- AI travel chat and day-by-day itinerary generation
+- Destination discovery and recommendations
+- Budget estimates and expense planning
+- Packing and family-trip planning
+- Itinerary PDF export
+- Session-based saved trips and user profiles
+- Weather integration and responsive dark/light UI
 
-| Feature | Description |
-|---|---|
-| 🤖 **AI Chat Assistant** | Conversational travel planning with full session memory |
-| 🗓 **Itinerary Generator** | Day-by-day AI travel plans with morning/afternoon/evening slots |
-| 🌍 **Destination Explorer** | AI recommendations + 12 curated destinations with details |
-| 💰 **Budget Planner** | Instant estimates + AI narrative breakdown + expense tracker |
-| 🎒 **Packing Checklist** | AI-generated packing lists by destination, season & activities |
-| 📄 **PDF Export** | Download full itinerary as a formatted PDF (via ReportLab) |
-| 👨‍👩‍👧 **Family Trip Planner** | Child-friendly itineraries with age-specific activity recommendations |
-| 💾 **Save Trips** | Session-based trip storage with favorites & countdown timers |
-| 🌤 **Weather Info** | OpenWeatherMap integration with AI fallback |
-| 🌙 **Dark/Light Mode** | Persistent theme toggle with system-level CSS variables |
-| 📱 **Fully Responsive** | Mobile-first design with collapsible sidebar |
+## Project structure
 
----
-
-## 📁 Project Structure
-
-```
-travel_agent/
-├── app.py                      ← Flask app entry point
+```text
+IBM_Project/
+├── backend/
+│   ├── app.py                 # Flask application factory and entry point
+│   ├── config/                # Environment-based application settings
+│   ├── models/                # Trip and user-profile models
+│   ├── prompts/               # watsonx.ai agent instructions
+│   ├── routes/                # Flask blueprints and API endpoints
+│   ├── services/              # watsonx.ai, weather and budget services
+│   ├── utils/                 # Helpers and PDF export
+│   ├── tests/                 # Backend tests
+│   └── scripts/               # Developer utilities
+├── frontend/
+│   ├── templates/             # Jinja HTML templates
+│   └── static/                # CSS and JavaScript assets
+├── app.py                     # Backwards-compatible root launcher
 ├── requirements.txt
-├── .env.example                ← Copy to .env and fill in credentials
-│
-├── config/
-│   ├── __init__.py
-│   └── settings.py             ← All config from environment variables
-│
-├── prompts/
-│   ├── __init__.py
-│   └── agent_instructions.py   ← ★ AGENT CUSTOMIZATION HUB ★
-│
-├── services/
-│   ├── __init__.py
-│   ├── watsonx_service.py      ← All IBM Watsonx.ai calls
-│   ├── weather_service.py      ← OpenWeatherMap integration
-│   └── budget_service.py       ← Client-side budget calculations
-│
-├── routes/
-│   ├── __init__.py
-│   ├── main.py                 ← Dashboard, profile, saved trips
-│   ├── chat.py                 ← AI chat endpoint
-│   ├── planner.py              ← Itinerary, tips, packing, PDF
-│   ├── destinations.py         ← Recommendations, weather info
-│   └── budget.py               ← Budget estimation
-│
-├── models/
-│   ├── __init__.py
-│   ├── trip.py                 ← Trip, BudgetBreakdown dataclasses
-│   └── user_profile.py         ← UserProfile, ConversationTurn
-│
-├── utils/
-│   ├── __init__.py
-│   ├── helpers.py              ← Utility functions
-│   └── pdf_export.py           ← ReportLab PDF generation
-│
-├── templates/
-│   ├── base.html               ← Shared layout (sidebar, topbar, footer)
-│   ├── index.html              ← Dashboard with hero & quick actions
-│   ├── chat.html               ← AI chat interface
-│   ├── planner.html            ← Trip planner form + results
-│   ├── destinations.html       ← Destination cards + AI recommendations
-│   ├── budget.html             ← Budget estimator + expense tracker
-│   ├── saved_trips.html        ← Saved trips management
-│   └── profile.html            ← User profile & emergency info
-│
-└── static/
-    ├── css/style.css           ← Full design system (glassmorphism, dark mode)
-    └── js/
-        ├── main.js             ← Dark mode, sidebar, toasts, AI text formatter
-        ├── chat.js             ← Chat interface
-        ├── planner.js          ← Planner page
-        └── budget.js           ← Budget charts & expense tracker
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
----
+## Getting started
 
-## ⚙️ Setup Instructions
-
-### 1. Clone / Navigate to the project
+### 1. Create and activate a virtual environment
 
 ```bash
-cd travel_agent
-```
-
-### 2. Create a virtual environment
-
-```bash
-python -m venv venv
+python -m venv .venv
 # Windows
-venv\Scripts\activate
+.venv\Scripts\activate
 # macOS/Linux
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure environment variables
+### 3. Configure environment variables
+
+Copy `.env.example` to `.env` and add your own credentials:
 
 ```bash
+# Windows PowerShell
+Copy-Item .env.example .env
+# macOS/Linux
 cp .env.example .env
 ```
 
-Edit `.env`:
+### 4. Run locally
 
-```env
-IBM_API_KEY=your_ibm_cloud_api_key
-WATSONX_PROJECT_ID=your_project_id
-WATSONX_URL=https://au-syd.ml.cloud.ibm.com
-WATSONX_MODEL_ID=meta-llama/llama-3-3-70b-instruct
-SECRET_KEY=your-strong-random-key
-OPENWEATHER_API_KEY=optional_for_live_weather
-```
-
-### 5. Run the application
+From the repository root:
 
 ```bash
 python app.py
 ```
 
-Open [http://localhost:5000](http://localhost:5000)
+Open http://localhost:5000.
 
----
+### Production
 
-## 🔑 IBM Watsonx.ai Setup
-
-1. Log in to [IBM Cloud](https://cloud.ibm.com)
-2. Create a **Watsonx.ai** service instance
-3. Go to **Manage → Access (IAM)** → Create an API Key
-4. Copy the API Key and paste into `.env` as `IBM_API_KEY`
-5. Open Watsonx.ai, create a project and copy the **Project ID**
-6. Choose a Granite model ID (e.g. `ibm/granite-13b-instruct-v2`)
-
----
-
-## 🎨 Agent Customization
-
-All agent behavior is controlled from **one file**:
-
-```
-prompts/agent_instructions.py
-```
-
-Editable sections:
-
-| Section | What you can change |
-|---|---|
-| `AGENT_NAME` | Name displayed in the UI |
-| `AGENT_PERSONALITY` | Tone, backstory, expertise description |
-| `AGENT_TONE` | Communication style rules |
-| `TRAVEL_SPECIALIZATIONS` | List of travel niches the agent covers |
-| `SAFETY_RULES` | Travel advisory and safety guardrails |
-| `BUDGET_STRATEGY` | How the agent approaches cost optimization |
-| `REGIONAL_EXPERTISE` | Which geographic regions the agent knows best |
-| `RECOMMENDATION_STYLE` | How suggestions are presented and structured |
-
-No changes required to routes, services, or templates.
-
----
-
-## 🚢 Production Deployment
-
-### Local Production
+The root launcher remains compatible with Gunicorn:
 
 ```bash
 gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 
-### IBM Cloud Code Engine
+## Developer utility
+
+To list IBM watsonx.ai projects associated with your IBM account:
 
 ```bash
-# Build container
-docker build -t voyager-travel-agent .
-# Push to IBM Container Registry
-ibmcloud cr push us.icr.io/<namespace>/voyager-travel-agent
-# Deploy to Code Engine
-ibmcloud ce app create --name voyager --image us.icr.io/<namespace>/voyager-travel-agent --port 5000
+python backend/scripts/find_project_id.py
 ```
 
-### Environment variables on IBM Cloud
+The utility reads credentials from the root `.env` file and does not print the API key.
 
-Set via Code Engine → Application → Environment variables, mirroring all keys from `.env.example`.
+## Tests
 
----
+Run from the repository root:
 
-## 📦 Key Dependencies
+```bash
+python -m unittest discover -s backend/tests -v
+```
 
-| Package | Purpose |
-|---|---|
-| `Flask` | Web framework |
-| `Flask-Session` | Server-side session storage |
-| `ibm-watsonx-ai` | IBM Granite model integration |
-| `python-dotenv` | `.env` file loading |
-| `reportlab` | PDF itinerary export |
-| `requests` | OpenWeatherMap API calls |
-| `gunicorn` | Production WSGI server |
+## Technology
 
----
+- **Backend:** Python, Flask, Flask-Session
+- **AI:** IBM watsonx.ai
+- **Frontend:** Jinja, Bootstrap 5, CSS, JavaScript
+- **PDF:** ReportLab
+- **Deployment:** Gunicorn
 
-## 🛡 Security Notes
+## Security
 
-- API keys are read from environment variables — never hardcoded
-- Sessions use server-side filesystem storage with signed cookies
-- All user inputs are sanitized with length limits before AI processing
-- No financial data (card numbers, bank details) is ever requested or stored
-
----
-
-*Made with ❤️ using IBM Watsonx.ai Llama models*
+- Keep real credentials in the local `.env` file or deployment environment variables.
+- Never commit `.env`, session files, local databases, caches or generated output.
+- Use a strong, unique Flask `SECRET_KEY` in deployment.
